@@ -5,6 +5,11 @@ const TokenGenerator = require('uuid-token-generator');
 const readJsonData = require('./utils/fs/readJson');
 const emailValidate = require('./middlewares/emailValidate');
 const passwordValidate = require('./middlewares/passwordValidate');
+const tokenValidate = require('./middlewares/tokenValidate');
+const writeJsonData = require('./utils/fs/writeJson');
+const nameValidate = require('./middlewares/nameValidate');
+const ageValidate = require('./middlewares/ageValidate');
+const { talkValidate, watchdAtValidate, rateValidate } = require('./middlewares/talkValidate');
 
 const app = express();
 app.use(express.json());
@@ -42,6 +47,18 @@ app.post('/login', emailValidate, passwordValidate, (req, res) => {
     token: tokenRandon.generate().substring(0, 16),
   });
 });
+
+app.post('/talker', 
+  tokenValidate,
+  nameValidate, ageValidate, talkValidate, watchdAtValidate, rateValidate, async (req, res) => {
+    const { body } = req;
+    const data = await readJsonData(pathJson);
+    const newID = data.reduce((prev, cur) => ((prev.id > cur.id) ? prev : cur)).id + 1;
+    const newTalker = { id: newID, ...body };
+    data.push(newTalker);
+    await writeJsonData(pathJson, data);
+    res.status(201).json(newTalker); 
+  });
 
 app.listen(PORT, () => {
   console.log('Online');
