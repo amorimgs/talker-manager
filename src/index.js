@@ -3,6 +3,8 @@ const path = require('node:path');
 const TokenGenerator = require('uuid-token-generator');
 
 const readJsonData = require('./utils/fs/readJson');
+const emailValidate = require('./middlewares/emailValidate');
+const passwordValidate = require('./middlewares/passwordValidate');
 
 const app = express();
 app.use(express.json());
@@ -34,8 +36,7 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(HTTP_OK_STATUS).json(result);
 });
 
-app.post('/login', (req, res) => {
-  // const { email, password } = req.body;
+app.post('/login', emailValidate, passwordValidate, (req, res) => {
   const tokenRandon = new TokenGenerator(256, TokenGenerator.BASE62);
   return res.status(HTTP_OK_STATUS).json({
     token: tokenRandon.generate().substring(0, 16),
