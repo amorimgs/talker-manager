@@ -80,6 +80,14 @@ app.put('/talker/:id',
     return res.status(200).json(talkEdit);
   });
 
+app.delete('/talker/:id', tokenValidate, async (req, res) => {
+  const data = await readJsonData(pathJson);
+  const { id } = req.params;
+  const dataEdit = data.filter((el) => el.id !== +id);
+  await writeJsonData(pathJson, dataEdit);
+  res.status(204).end();
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
