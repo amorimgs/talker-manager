@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('node:path');
+const TokenGenerator = require('uuid-token-generator');
+
 const readJsonData = require('./utils/fs/readJson');
 
 const app = express();
@@ -30,6 +32,14 @@ app.get('/talker/:id', async (req, res) => {
     });
   }
   return res.status(HTTP_OK_STATUS).json(result);
+});
+
+app.post('/login', (req, res) => {
+  // const { email, password } = req.body;
+  const tokenRandon = new TokenGenerator(256, TokenGenerator.BASE62);
+  return res.status(HTTP_OK_STATUS).json({
+    token: tokenRandon.generate().substring(0, 16),
+  });
 });
 
 app.listen(PORT, () => {
