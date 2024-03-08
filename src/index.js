@@ -29,6 +29,16 @@ app.get('/talker', async (req, res) => {
   res.status(HTTP_OK_STATUS).json(data);
 });
 
+app.get('/talker/search', tokenValidate, async (req, res) => {
+  const { q } = req.query;
+  const data = await readJsonData(pathJson);
+  const result = data.filter((el) => el.name.includes(q));
+  if (!result) {
+    return res.status(200).json([]);
+  }
+  res.status(200).json(result);
+});
+
 app.get('/talker/:id', async (req, res) => {
   const { params } = req;
   const data = await readJsonData(pathJson);
