@@ -47,4 +47,5 @@ module.exports = {
   talkValidate,
   watchdAtValidate,
   rateValidate,
+  rateAuxiliar,
 };
