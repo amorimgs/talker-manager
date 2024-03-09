@@ -10,8 +10,9 @@ const writeJsonData = require('./utils/fs/writeJson');
 const nameValidate = require('./middlewares/nameValidate');
 const ageValidate = require('./middlewares/ageValidate');
 const { talkValidate,
-  watchdAtValidate, rateValidate, rateAuxiliar } = require('./middlewares/talkValidate');
-const { qParam, rateParam, noParam, allParam } = require('./middlewares/talkerSearch');
+  watchdAtValidate, rateValidate } = require('./middlewares/talkValidate');
+const { allParam } = require('./middlewares/talkerSearch');
+const { rateQueyValidate, dateQueryValidate } = require('./middlewares/queryValidate');
 
 const app = express();
 app.use(express.json());
@@ -31,23 +32,11 @@ app.get('/talker', async (req, res) => {
   res.status(HTTP_OK_STATUS).json(data);
 });
 
-app.get('/talker/search', tokenValidate, allParam, qParam, rateParam, noParam);
-
-app.get('/talker/search', tokenValidate, async (req, res) => {
-  const { rate } = req.query;
-  console.log(rate);
-  if (!rateAuxiliar(+rate)) {
-    res.status(400).json({
-      message: 'O campo "rate" deve ser um número inteiro entre 1 e 5',
-    });
-  }
-  const data = await readJsonData(pathJson);
-  const result = data.filter((el) => el.talk.rate === +rate);
-  if (!result) {
-    return res.status(200).json([]);
-  }
-  res.status(200).json(result);
-});
+app.get('/talker/search', 
+  tokenValidate, 
+  rateQueyValidate,
+  dateQueryValidate,
+  allParam);
 
 app.get('/talker/:id', async (req, res) => {
   const { params } = req;
