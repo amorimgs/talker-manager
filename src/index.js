@@ -13,6 +13,7 @@ const { talkValidate,
   watchdAtValidate, rateValidate } = require('./middlewares/talkValidate');
 const { allParam } = require('./middlewares/talkerSearch');
 const { rateQueyValidate, dateQueryValidate } = require('./middlewares/queryValidate');
+const rateBodyValidate = require('./middlewares/rateBodyValidate');
 
 const app = express();
 app.use(express.json());
@@ -95,6 +96,16 @@ app.delete('/talker/:id', tokenValidate, async (req, res) => {
   const dataEdit = data.filter((el) => el.id !== +id);
   await writeJsonData(pathJson, dataEdit);
   res.status(204).end();
+});
+
+app.patch('/talker/rate/:id', tokenValidate, rateBodyValidate, async (req, res) => {
+  const { id } = req.params;
+  const { rate } = req.body;
+  const data = await readJsonData(pathJson);
+  const talker = data.find((el) => el.id === +id);
+  talker.talk.rate = +rate;
+  await writeJsonData(pathJson, data);
+  return res.status(204).end();
 });
 
 app.listen(PORT, () => {
