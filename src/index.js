@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('node:path');
 const TokenGenerator = require('uuid-token-generator');
+const connection = require('./db/connection');
 
 const readJsonData = require('./utils/fs/readJson');
 const emailValidate = require('./middlewares/emailValidate');
@@ -38,6 +39,22 @@ app.get('/talker/search',
   rateQueyValidate,
   dateQueryValidate,
   allParam);
+
+app.get('/talker/db', async (req, res) => {
+  const query = 'SELECT * FROM talkers';
+  const result = await connection.execute(query);
+  console.log(result[0]);
+  const resultFormated = result[0].map((el) => ({
+    name: el.name,
+    age: el.age,
+    id: el.id,
+    talk: {
+      rate: el.talk_rate,
+      watchedAt: el.talk_watched_at,
+    },
+  }));
+  return res.status(200).json(resultFormated);
+});
 
 app.get('/talker/:id', async (req, res) => {
   const { params } = req;
@@ -108,6 +125,12 @@ app.patch('/talker/rate/:id', tokenValidate, rateBodyValidate, async (req, res) 
   return res.status(204).end();
 });
 
-app.listen(PORT, () => {
-  console.log('Online');
-});
+const main = async () => {
+  await connection.execute('SELECT 1+1');
+  console.log('MySQL connection OK | port 3306');
+  app.listen(PORT, async () => {
+    console.log('Online port 3001');
+  });
+};
+
+main().catch((err) => console.log(err));
