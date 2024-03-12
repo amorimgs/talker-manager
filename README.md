@@ -1,10 +1,31 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+# Projeto Talker Manager
+
+<details>
+  <summary>👨‍💻 O que foi desenvolvido</summary><br />
+
+  Foi construido uma aplicação de cadastro de talkers (palestrantes) em que será possível cadastrar, visualizar, pesquisar, editar e excluir informações. Para isso
+
+  1. Desenvolvi uma API de um `CRUD` (**C**reate, **R**ead, **U**pdate e **D**elete) de palestrantes (talkers) e;
+  2. Desenvolvi alguns endpoints que para ler e escrever em um arquivo utilizando o módulo `fs`.
+  3. Testes desenvolvidos pela Trybe.
+     
+</details>
+
+<details>
+<summary> 🐳 Início rápido sem Docker</summary><br>
+
+```bash
+# em um terminal, instale as dependencias
+npm install
+# conecte o banco de dados
+INFORMAÇÕES NO ARQUIVO ENV.
+
+# inicie a aplicação
+npm start
+# ou para iniciar com live-reload
+npm run dev
+
+# Para rodar os testes
+npm test
+```
+</details>
