@@ -17,8 +17,6 @@
 ```bash
 # em um terminal, instale as dependencias
 npm install
-# conecte o banco de dados
-INFORMAÇÕES NO ARQUIVO ENV.
 
 # inicie a aplicação
 npm start
